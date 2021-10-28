@@ -16,8 +16,8 @@ const CreateCourse = ({ addNewCourse, courseData }) => {
     length: "",
   });
   useEffect(() => {
-    courseData && setTask(courseData);
-  }, []);
+    setTask(courseData);
+  }, [courseData]);
 
   const handleChange = (e) => {
     setTask({

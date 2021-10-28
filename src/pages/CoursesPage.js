@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import CoursesHeader from "../components/CoursesHeader";
 import "./CoursesStyle.css";
 import CreateCourse from "../components/CreateCourse";
-import { DELETE } from "../redux/actionTypes";
+import { DELETE, SEARCHTITLE } from "../redux/actionTypes";
 import { useDispatch } from "react-redux";
 import { toastr } from "react-redux-toastr";
 
@@ -14,6 +14,23 @@ const CoursesPage = () => {
   const [toggleDelete, setToggleDelete] = useState(false);
   const [toggleEdit, setToggleEdit] = useState(false);
   const [courseData, setCourseData] = useState(null);
+  const [searchValue, setSearchValue] = useState({
+    title: "",
+    category: "",
+    author: "",
+  })
+
+  const handleSearchChange = (e) => {
+    setSearchValue({...searchValue, [e.target.name]: e.target.value})
+    if(e.target.name === "title") {
+      dispatch({type: SEARCHTITLE, payload: searchValue?.title});
+    } else {
+      console.log("ready for others")
+    }
+  }
+
+
+
 
   useEffect(() => {
       setCourseData(null)
@@ -97,25 +114,25 @@ const CoursesPage = () => {
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Title" />
+                    <CoursesHeader isInput heading="Title" handleSearchChange={handleSearchChange} searchValue={searchValue} name="title" />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Length" />
+                    <CoursesHeader isInput heading="Length" handleSearchChange={handleSearchChange} searchValue={searchValue}  name="length" />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Category" />
+                    <CoursesHeader isInput heading="Category" handleSearchChange={handleSearchChange} searchValue={searchValue} name="category" />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Author" />
+                    <CoursesHeader isInput heading="Author" handleSearchChange={handleSearchChange} searchValue={searchValue} name="author" />
                   </td>
                 </th>
                 {courses.length > 0 ? (

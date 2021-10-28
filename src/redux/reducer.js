@@ -1,4 +1,4 @@
-import { CREATE, DELETE, EDIT } from "./actionTypes";
+import { CREATE, DELETE, EDIT, SEARCHTITLE } from "./actionTypes";
 
 const initialState = [
   {
@@ -59,6 +59,15 @@ const reducer = (state = initialState, action) => {
         return item;
       });
       return EdittedCourse;
+      break;
+    
+
+    case SEARCHTITLE:
+      console.log(action?.payload)
+      const tempSearchTitle = [...state];
+      const updatedSearchTitle = tempSearchTitle.filter(item => item.title === action.payload)
+      // console.log(updatedSearchTitle)
+      return state;
       break;
     default:
       return state;
