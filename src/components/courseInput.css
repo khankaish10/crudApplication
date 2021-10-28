@@ -1,0 +1,17 @@
+.addTitle > h4  {
+    margin-bottom: 7px;
+}
+.addTitle {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.addTitle > input {
+    outline: none;
+    padding: 8px 15px ;
+    width: 100%;
+}
+.addTitle > input::placeholder {
+   font-style: 14px;
+    font-weight: 500;
+}

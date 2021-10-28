@@ -1,0 +1,68 @@
+.coursesContainer {
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+}
+.coursesListContainer {
+    border: 1px solid rgba(165, 165, 165, 0.734);
+    border-radius: 3px;
+    padding: 5px;
+    overflow-x: auto;
+    min-height: 200px;
+}
+.coursesListContainer > .coursesHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.coursesList > table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.coursesList > table  th {
+    text-align: left;
+}
+.coursesList >  table, td{
+    padding: 2px 5px;
+    height: 40px;
+    color: rgb(107 96 96);
+}
+
+
+.isEditActive:hover{
+    background-color: greenyellow;
+}
+
+.isDeleteActive:hover {
+    background-color: rgb(151, 43, 43);
+    color: #fff ;
+}
+
+
+.coursesBtnGroup {
+    display: flex;
+    margin: 20px 0;
+}
+
+.coursesBtnGroup > button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+#btnNew {
+    background-color: rgb(28, 28, 136);
+}
+#btnEdit {
+    background-color: rgb(168, 175, 32);
+}
+#btnDelete {
+    background-color: rgb(206, 48, 69);
+}
