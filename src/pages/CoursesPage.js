@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import CoursesHeader from "../components/CoursesHeader";
 import "./CoursesStyle.css";
 import CreateCourse from "../components/CreateCourse";
-import { DELETE, SEARCHTITLE } from "../redux/actionTypes";
+import { DELETE  } from "../redux/actionTypes";
 import { useDispatch } from "react-redux";
 import { toastr } from "react-redux-toastr";
 
@@ -19,22 +19,64 @@ const CoursesPage = () => {
     category: "",
     author: "",
   })
+  const [filteredResults, setFilteredResults] = useState([]);
+
+const titleRef = useRef("");
+const categoryRef = useRef("");
+const authorRef = useRef("");
 
   const handleSearchChange = (e) => {
-    setSearchValue({...searchValue, [e.target.name]: e.target.value})
-    if(e.target.name === "title") {
-      dispatch({type: SEARCHTITLE, payload: searchValue?.title});
-    } else {
-      console.log("ready for others")
+    const tempState = courses;
+  
+    switch (e.target.name) {
+      case "title":
+        if(titleRef.current.value !== "") {
+          const updatedSearchTitle = tempState.filter(item => {
+            return Object.values(item)[1].toLowerCase().includes(titleRef.current.value.toLowerCase())
+        })
+        setFilteredResults(updatedSearchTitle);
+        } else {
+          setFilteredResults(courses)
+        }
+        break;
+    
+      case "category":
+        if(categoryRef.current.value !== "") {
+          const updatedSearchTitle = tempState.filter(item => {
+          return Object.values(item)[3].toLowerCase().includes(categoryRef.current.value.toLowerCase())
+        })
+        setFilteredResults(updatedSearchTitle);
+        } else {
+          setFilteredResults(courses)
+        }
+        break;
+    
+      case "author":
+        if(authorRef.current.value !== "") {
+          const updatedSearchTitle = tempState.filter(item => {
+            const authors = item['author']
+            return authors.toLowerCase().includes(authorRef.current.value.toLowerCase())
+        })
+        setFilteredResults(updatedSearchTitle);
+        } else {
+          setFilteredResults(courses)
+        }
+        break;
+    
+      default:
+        break;
     }
   }
 
-
-
+  useEffect(() => {
+    setCourseData(null)
+  }, [])
 
   useEffect(() => {
-      setCourseData(null)
-  },[])
+      
+      setFilteredResults(courses)
+  },[courses])
+
   const addNewCourse = () => {
     setIsNewCourseOpen(!isNewCourseOpen);
   };
@@ -114,29 +156,50 @@ const CoursesPage = () => {
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Title" handleSearchChange={handleSearchChange} searchValue={searchValue} name="title" />
+                    <CoursesHeader 
+                      isInput 
+                      heading="Title" 
+                      handleSearchChange={handleSearchChange} 
+                      searchValue={searchValue} 
+                      name="title" 
+                      reference ={titleRef}  
+                    />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Length" handleSearchChange={handleSearchChange} searchValue={searchValue}  name="length" />
+                    <CoursesHeader 
+                      isInput 
+                      heading="Length" 
+                      handleSearchChange={handleSearchChange} 
+                      searchValue={searchValue}  
+                      name="length" 
+                       
+                    />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Category" handleSearchChange={handleSearchChange} searchValue={searchValue} name="category" />
+                    <CoursesHeader 
+                      isInput 
+                      heading="Category" 
+                      handleSearchChange={handleSearchChange} 
+                      searchValue={searchValue} 
+                      name="category" 
+                      reference ={categoryRef} 
+                       />
                   </td>
                 </th>
                 <th>
                   {" "}
                   <td>
-                    <CoursesHeader isInput heading="Author" handleSearchChange={handleSearchChange} searchValue={searchValue} name="author" />
+                    <CoursesHeader isInput heading="Author" handleSearchChange={handleSearchChange} searchValue={searchValue} name="author" reference={authorRef} />
                   </td>
                 </th>
-                {courses.length > 0 ? (
-                  courses.map((course) => {
+                {filteredResults.length > 0 ? (
+                  filteredResults.map((course) => {
                     return (
                       <tr onClick={(e) => handleEditAndDelete(e, course)} key={course.id} className={toggleEdit ? "isEditActive" : toggleDelete && "isDeleteActive"}>
                         <td style={{color: "rgb(67 36 142)", textDecoration: 'underline'}}>{course.title}</td>

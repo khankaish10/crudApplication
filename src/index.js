@@ -9,32 +9,47 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import ReduxToastr from 'react-redux-toastr'
- 
+
+import  {persistStore, persistReducer} from 'redux-persist'
+import storage from "redux-persist/lib/storage"
+import {PersistGate} from 'redux-persist/es/integration/react'
+
+const persistConfig = {
+  key: "root",
+  storage
+}
 
 const reducers = combineReducers({
   toastr: toastrReducer,
   reducer,
 });
+
+const persistedReducer =  persistReducer(persistConfig, reducers)
+ 
 const store = createStore(
-  reducers,
+  persistedReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+const persistor = persistStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
-      <ReduxToastr
-        timeOut={4000}
-        newestOnTop={false}
-        preventDuplicates
-        position="bottom-right"
-        getState={(state) => state.toastr} // This is the default
-        transitionIn="fadeIn"
-        transitionOut="fadeOut"
-        progressBar
-        closeOnToastrClick
-      />
+      <PersistGate persistor={persistor} >
+        <App />
+          <ReduxToastr
+            timeOut={4000}
+            newestOnTop={false}
+            preventDuplicates
+            position="bottom-right"
+            getState={(state) => state.toastr} // This is the default
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
+            progressBar
+            closeOnToastrClick
+          />
+        </PersistGate>  
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

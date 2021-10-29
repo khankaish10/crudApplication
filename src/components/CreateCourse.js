@@ -53,7 +53,7 @@ const CreateCourse = ({ addNewCourse, courseData }) => {
         addNewCourse();
         dispatch({
           type: CREATE,
-          payload: { ...task, id: Math.floor(Math.random() * 1000 + 1) },
+          payload: {  id: Math.floor(Math.random() * 1000 + 1), ...task },
         });
         toastr.success("Success", "course is added");
       }
